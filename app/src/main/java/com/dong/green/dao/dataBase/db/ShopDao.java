@@ -1,6 +1,5 @@
 package com.dong.green.dao.dataBase.db;
 
-import java.util.List;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteStatement;
 
@@ -9,8 +8,6 @@ import org.greenrobot.greendao.Property;
 import org.greenrobot.greendao.internal.DaoConfig;
 import org.greenrobot.greendao.database.Database;
 import org.greenrobot.greendao.database.DatabaseStatement;
-import org.greenrobot.greendao.query.Query;
-import org.greenrobot.greendao.query.QueryBuilder;
 
 import com.dong.green.dao.dataBase.bean.Shop;
 
@@ -31,11 +28,8 @@ public class ShopDao extends AbstractDao<Shop, Long> {
         public final static Property Shop_name = new Property(1, String.class, "shop_name", false, "SHOP_NAME");
         public final static Property Shop_code = new Property(2, String.class, "shop_code", false, "SHOP_CODE");
         public final static Property Shop_price = new Property(3, String.class, "shop_price", false, "SHOP_PRICE");
-        public final static Property Shop_number = new Property(4, int.class, "shop_number", false, "SHOP_NUMBER");
-        public final static Property ShopIdForOrder = new Property(5, Long.class, "shopIdForOrder", false, "SHOP_ID_FOR_ORDER");
     }
 
-    private Query<Shop> order_ShopsListQuery;
 
     public ShopDao(DaoConfig config) {
         super(config);
@@ -52,9 +46,7 @@ public class ShopDao extends AbstractDao<Shop, Long> {
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
                 "\"SHOP_NAME\" TEXT," + // 1: shop_name
                 "\"SHOP_CODE\" TEXT," + // 2: shop_code
-                "\"SHOP_PRICE\" TEXT," + // 3: shop_price
-                "\"SHOP_NUMBER\" INTEGER NOT NULL ," + // 4: shop_number
-                "\"SHOP_ID_FOR_ORDER\" INTEGER);"); // 5: shopIdForOrder
+                "\"SHOP_PRICE\" TEXT);"); // 3: shop_price
     }
 
     /** Drops the underlying database table. */
@@ -86,12 +78,6 @@ public class ShopDao extends AbstractDao<Shop, Long> {
         if (shop_price != null) {
             stmt.bindString(4, shop_price);
         }
-        stmt.bindLong(5, entity.getShop_number());
- 
-        Long shopIdForOrder = entity.getShopIdForOrder();
-        if (shopIdForOrder != null) {
-            stmt.bindLong(6, shopIdForOrder);
-        }
     }
 
     @Override
@@ -117,12 +103,6 @@ public class ShopDao extends AbstractDao<Shop, Long> {
         if (shop_price != null) {
             stmt.bindString(4, shop_price);
         }
-        stmt.bindLong(5, entity.getShop_number());
- 
-        Long shopIdForOrder = entity.getShopIdForOrder();
-        if (shopIdForOrder != null) {
-            stmt.bindLong(6, shopIdForOrder);
-        }
     }
 
     @Override
@@ -136,9 +116,7 @@ public class ShopDao extends AbstractDao<Shop, Long> {
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // shop_name
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // shop_code
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // shop_price
-            cursor.getInt(offset + 4), // shop_number
-            cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5) // shopIdForOrder
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3) // shop_price
         );
         return entity;
     }
@@ -149,8 +127,6 @@ public class ShopDao extends AbstractDao<Shop, Long> {
         entity.setShop_name(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setShop_code(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
         entity.setShop_price(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setShop_number(cursor.getInt(offset + 4));
-        entity.setShopIdForOrder(cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5));
      }
     
     @Override
@@ -178,18 +154,4 @@ public class ShopDao extends AbstractDao<Shop, Long> {
         return true;
     }
     
-    /** Internal query to resolve the "shopsList" to-many relationship of Order. */
-    public List<Shop> _queryOrder_ShopsList(Long shopIdForOrder) {
-        synchronized (this) {
-            if (order_ShopsListQuery == null) {
-                QueryBuilder<Shop> queryBuilder = queryBuilder();
-                queryBuilder.where(Properties.ShopIdForOrder.eq(null));
-                order_ShopsListQuery = queryBuilder.build();
-            }
-        }
-        Query<Shop> query = order_ShopsListQuery.forCurrentThread();
-        query.setParameter(0, shopIdForOrder);
-        return query.list();
-    }
-
 }

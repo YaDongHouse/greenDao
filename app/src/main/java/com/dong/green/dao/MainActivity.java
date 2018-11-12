@@ -15,10 +15,12 @@ import android.widget.Toast;
 
 import com.dong.green.dao.dataBase.bean.Order;
 import com.dong.green.dao.dataBase.bean.Shop;
+import com.dong.green.dao.dataBase.bean.ShopInfo;
 import com.dong.green.dao.dataBase.bean.User;
 import com.dong.green.dao.dataBase.db.DaoSession;
 import com.dong.green.dao.dataBase.db.OrderDao;
 import com.dong.green.dao.dataBase.db.ShopDao;
+import com.dong.green.dao.dataBase.db.ShopInfoDao;
 import com.dong.green.dao.dataBase.db.UserDao;
 
 import java.util.List;
@@ -34,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private UserDao userDao;
     private ShopDao shopDao;
     private OrderDao orderDao;
+    private ShopInfoDao shopInfoDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,15 +87,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         userDao = daoSession.getUserDao();
         shopDao = daoSession.getShopDao();
         orderDao = daoSession.getOrderDao();
+        shopInfoDao = daoSession.getShopInfoDao();
         User user = new User(null,"李永见","18655897896",2,"0.85");
         userDao.insert(user);
         Order order = new Order(null,"net-123456",1,"pay_code-123456",user.getId());
         orderDao.insert(order);
-        Shop shop = new Shop(null,"商品1","00000001","5.1",1,order.getId());
-        Shop shop2 = new Shop(null,"商品2","00000001","5.2",2,order.getId());
-        Shop shop3 = new Shop(null,"商品3","00000001","5.3",3,order.getId());
-        Shop shop4 = new Shop(null,"商品4","00000001","5.4",4,order.getId());
-        shopDao.insertInTx(shop,shop2,shop3,shop4);
+        Shop shop = new Shop(null,"商品1","00000001","5.1");
+        shopDao.insert(shop);
+        Shop shop2 = new Shop(null,"商品2","00000001","5.2");
+        shopDao.insert(shop2);
+        Shop shop3 = new Shop(null,"商品3","00000001","5.3");
+        shopDao.insert(shop3);
+        Shop shop4 = new Shop(null,"商品4","00000001","5.4");
+        shopDao.insert(shop4);
+        ShopInfo shopInfo = new ShopInfo(null,order.getId(),2,shop.getId());
+        ShopInfo shopInfo2 = new ShopInfo(null,order.getId(),3,shop2.getId());
+        ShopInfo shopInfo3 = new ShopInfo(null,order.getId(),4,shop3.getId());
+        ShopInfo shopInfo4 = new ShopInfo(null,order.getId(),5,shop4.getId());
+        shopInfoDao.insertInTx(shopInfo,shopInfo2,shopInfo3,shopInfo4);
     }
 
     private static final String TAG = "MainActivity";

@@ -31,29 +31,18 @@ public class Shop {
      */
     private String shop_price;
 
-    /**
-     * 商品数量
-     */
-    private int shop_number;
 
-    /**
-     * 此处自定义shopIdForOrder，用于和Orders中对应
-     */
-    private Long shopIdForOrder;
 
-    @Generated(hash = 2028975951)
-    public Shop(Long id, String shop_name, String shop_code, String shop_price,
-            int shop_number, Long shopIdForOrder) {
+    @Generated(hash = 633476670)
+    public Shop() {
+    }
+
+    @Generated(hash = 1331967212)
+    public Shop(Long id, String shop_name, String shop_code, String shop_price) {
         this.id = id;
         this.shop_name = shop_name;
         this.shop_code = shop_code;
         this.shop_price = shop_price;
-        this.shop_number = shop_number;
-        this.shopIdForOrder = shopIdForOrder;
-    }
-
-    @Generated(hash = 633476670)
-    public Shop() {
     }
 
     public Long getId() {
@@ -88,21 +77,6 @@ public class Shop {
         this.shop_price = shop_price;
     }
 
-    public int getShop_number() {
-        return this.shop_number;
-    }
-
-    public void setShop_number(int shop_number) {
-        this.shop_number = shop_number;
-    }
-
-    public Long getShopIdForOrder() {
-        return this.shopIdForOrder;
-    }
-
-    public void setShopIdForOrder(Long shopIdForOrder) {
-        this.shopIdForOrder = shopIdForOrder;
-    }
 
     @Override
     public String toString() {
@@ -111,8 +85,6 @@ public class Shop {
                 ", shop_name='" + shop_name + '\'' +
                 ", shop_code='" + shop_code + '\'' +
                 ", shop_price='" + shop_price + '\'' +
-                ", shop_number=" + shop_number +
-                ", shopIdForOrder=" + shopIdForOrder +
                 '}';
     }
 }

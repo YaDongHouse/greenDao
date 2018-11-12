@@ -12,6 +12,7 @@ import com.dong.green.dao.dataBase.db.DaoSession;
 import com.dong.green.dao.dataBase.db.ShopDao;
 import com.dong.green.dao.dataBase.db.UserDao;
 import com.dong.green.dao.dataBase.db.OrderDao;
+import com.dong.green.dao.dataBase.db.ShopInfoDao;
 
 /**
  * @packInfo:com.dong.green.dao.bean
@@ -49,8 +50,8 @@ public class Order {
     private User user;
 
 
-    @ToMany(referencedJoinProperty = "shopIdForOrder")
-    private List<Shop> shopsList;
+    @ToMany(referencedJoinProperty = "shopInfoId")
+    private List<ShopInfo> shopsList;
 
 
     /** Used to resolve relations */
@@ -164,34 +165,6 @@ public class Order {
     }
 
 
-    /**
-     * To-many relationship, resolved on first access (and after reset).
-     * Changes to to-many relations are not persisted, make changes to the target entity.
-     */
-    @Generated(hash = 77224614)
-    public List<Shop> getShopsList() {
-        if (shopsList == null) {
-            final DaoSession daoSession = this.daoSession;
-            if (daoSession == null) {
-                throw new DaoException("Entity is detached from DAO context");
-            }
-            ShopDao targetDao = daoSession.getShopDao();
-            List<Shop> shopsListNew = targetDao._queryOrder_ShopsList(id);
-            synchronized (this) {
-                if (shopsList == null) {
-                    shopsList = shopsListNew;
-                }
-            }
-        }
-        return shopsList;
-    }
-
-
-    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
-    @Generated(hash = 332412601)
-    public synchronized void resetShopsList() {
-        shopsList = null;
-    }
 
 
     /**
@@ -250,10 +223,40 @@ public class Order {
                 ", pay_code='" + pay_code + '\'' +
                 ", uid=" + uid +
                 ", user=" + getUser() +
-                ", shopsList=" + getShopsList() +
+                ", shopsList=" +getShopsList()+
                 ", daoSession=" + daoSession +
                 ", myDao=" + myDao +
                 ", user__resolvedKey=" + user__resolvedKey +
                 '}';
+    }
+
+
+    /**
+     * To-many relationship, resolved on first access (and after reset).
+     * Changes to to-many relations are not persisted, make changes to the target entity.
+     */
+    @Generated(hash = 1519871467)
+    public List<ShopInfo> getShopsList() {
+        if (shopsList == null) {
+            final DaoSession daoSession = this.daoSession;
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            ShopInfoDao targetDao = daoSession.getShopInfoDao();
+            List<ShopInfo> shopsListNew = targetDao._queryOrder_ShopsList(id);
+            synchronized (this) {
+                if (shopsList == null) {
+                    shopsList = shopsListNew;
+                }
+            }
+        }
+        return shopsList;
+    }
+
+
+    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    @Generated(hash = 332412601)
+    public synchronized void resetShopsList() {
+        shopsList = null;
     }
 }
